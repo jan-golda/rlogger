@@ -84,22 +84,29 @@ function Logger(options){
 	if(options.file)fs.appendFileSync(options.file, "\n\n========================================\n Start\n========================================\n");
 	
 	//express.js
-	this._express = function(req, res, next){
-		var end = res.end;
-		res.end = function(chunk, encoding) {
-			
-			res.end = end;
-			res.end(chunk, encoding);
-			
-			if(res.statusCode >= 500){
-				logger.error("HTTP: &{0}& "+"{1}".red+" {2}".grey, [req.method, res.statusCode, req.url]);
-			}else if(res.statusCode >= 400){
-				logger.warn("HTTP: &{0}& "+"{1}".yellow+" {2}".grey, [req.method, res.statusCode, req.url]);
-			}else{
-				logger.dev("HTTP: &{0}& "+"{1}".green+" {2}".grey, [req.method, res.statusCode, req.url]);
-			}    
+	this._express = function(prefix){
+		if(prefix){
+			prefix = prefix+" ";
+		}else{
+			prefix = "";
+		}
+		return function(req, res, next){
+			var end = res.end;
+			res.end = function(chunk, encoding) {
+				
+				res.end = end;
+				res.end(chunk, encoding);
+				
+				if(res.statusCode >= 500){
+					logger.error(prefix+"&{0}& "+"{1}".red+" {2}".grey, [req.method, res.statusCode, req.url]);
+				}else if(res.statusCode >= 400){
+					logger.warn(prefix+"&{0}& "+"{1}".yellow+" {2}".grey, [req.method, res.statusCode, req.url]);
+				}else{
+					logger.dev(prefix+"&{0}& "+"{1}".green+" {2}".grey, [req.method, res.statusCode, req.url]);
+				}    
+			};
+			next();
 		};
-		next();
 	};
 }
 

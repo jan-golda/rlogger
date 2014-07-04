@@ -61,7 +61,8 @@ logger.dump(data);
 ### Express.js middleware
 If you want rlogger to log http requests you have to put somewhere this piece of code: 
 ```js
-app.use(logger._express);
+//prefix is not required
+app.use(logger._express(prefix));
 ```
 
 ## Example
@@ -76,7 +77,7 @@ GLOBAL.logger = require("rlogger")({
 	file: "server.log",
 	level: "dump"
 });
-server.use(logger._express);
+server.use(logger._express("HTTP:"));
 
 //routes
 server.get("/error", function(req,res){
