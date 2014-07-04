@@ -59,7 +59,49 @@ logger.dump(data);
 * __data__ - (Object, required) data to display
 
 ### Express.js middleware
-If you want rlogger to log http requests you have to put somewhere this piece code: 
+If you want rlogger to log http requests you have to put somewhere this piece of code: 
 ```js
 app.use(logger._express);
+```
+
+## Example
+```js
+var express = require("express");
+
+var server = express();
+
+//configuration
+server.set("port", 80);
+GLOBAL.logger = require("rlogger")({
+	file: "server.log",
+	level: "dump"
+});
+server.use(logger._express);
+
+//routes
+server.get("/error", function(req,res){
+	res.status(500);
+	res.end("Error printed to console!");
+	logger.error("Error requested from &{0}&", [req.ip]);
+});
+server.get("/warn", function(req,res){
+	res.status(400);
+	res.end("Warning printed to console!");
+	logger.warn("Warning requested from &{0}&", [req.ip]);
+});
+server.get("/info", function(req,res){
+	res.end("Info printed to console!");
+	logger.info("Info requested from &{0}&", [req.ip]);
+});
+server.get("/dev", function(req,res){
+	res.end("Dev message printed to console!");
+	logger.dev("Dev message requested from &{0}&", [req.ip]);
+});
+server.get("/dump", function(req,res){
+	res.end("Object printed to console!");
+	logger.dump({message: "Object printed to console", ip: req.ip});
+});
+
+server.listen(server.get("port"));
+logger.info("Express server listening on port &{0}&", [server.get("port")]);
 ```
