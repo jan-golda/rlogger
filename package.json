@@ -1,6 +1,6 @@
 {
   "name": "rlogger",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Very simple, nice-looking logger.",
   "keywords": [
     "logger",
@@ -17,7 +17,7 @@
   },
   "license": "MIT",
   "author": {
-    "name": "Jan Golda",
+    "name": "Jan Golda (Regzand)",
     "email": "regzand@gmail.com",
     "url": "regzand"
   },
@@ -27,10 +27,6 @@
     "url": "http://github.com/regzand/rLogger.git"
   },
   "dependencies": {
-    "colors": "0.6.2"
-  },
-  "readme": "rLogger\n=======\n\nVery simple, nice-looking logger.\n\n## Installation\n```bash\nnpm install rlogger\n```\n## Usage\n### Setting up\nTo set up rLogger you have to use one of these methods:\n```js\n//local logger\nvar logger = require(\"rlogger\")(options);\n//global logger\nGLOBAL.logger = require(\"rlogger\")(options);\n```\nOptions object:\n```js\nvar options = {\n  //file to save log to (default: none)\n  file: \"server.log\",\n  //level of logging (default: \"info\") (possible values: \"dump\" <=0, \"dev\" <=10, \"meta\" <=15, \"info\" <=20, \"warn\" <=30, \"error\" <=40)\n  level: \"info\",\n  //express.js app (default: none)\n  expressApp: app\n}\n```\n### Logging levels\n* \"__dump__\"\n  * 0 | Displays everything\n* \"__dev__\"\n  * 10 | Displays everything except dump messages\n* \"__meta__\"\n  * 15 | Displays info, warnings and errors with additional data\n* \"__info__\"\n  * 20 | Default, displays only info, warnings and error\n* \"__warn__\"\n  * 30 | Displays only warnings and errors\n* \"__error__\"\n  * 40 | Displays only errors\n\nYou can change level of logging using:\n```js\nlogger.setLevel(level);\n```\n### Logging\n```js\nlogger.error(message,[parameters], [meta]);\nlogger.warn(message,[parameters], [meta]);\nlogger.info(message,[parameters], [meta]);\nlogger.dev(message,[parameters], [meta]);\nlogger.dump(data);\n```\n* __message__ - (String, required) message to log\n  * Can contains {_index_} - will be replace with data form __parameters__ at given index\n  * Can contains &_text_& - text between will be colorized to highlight the most important informations\n* __parameters__ - (Array, optional) - contains data that will be place instead of {_index_}\n* __meta__ - (Object, optional) additional data that will be displayed after message\n* __data__ - (Object, required) data to display\n\n### Express.js middleware\nIf you specified expressApp in options, logger will be displaying also HTTP requests\n",
-  "readmeFilename": "README.md",
-  "_id": "rlogger@1.0.3",
-  "_from": "rlogger@"
+    "colors": "^0.6.2"
+  }
 }
