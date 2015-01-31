@@ -5,16 +5,16 @@ Very simple, nice-looking logger.
 
 ## Installation
 ```bash
-npm install rlogger
+npm install --save rlogger
 ```
 ## Usage
 ### Setting up
-To set up rLogger you have to use one of these methods:
+To set up rLogger you have to use this:
 ```js
-//local logger
-var logger = require("rlogger")(options);
-//global logger
-GLOBAL.logger = require("rlogger")(options);
+//only once
+var rLogger = require("rlogger")(options);
+//for every logger 
+GLOBAL.logger = rLogger.getLogger("PREFIX");
 ```
 Options object:
 ```js
@@ -41,7 +41,7 @@ var options = {
 
 You can change level of logging using:
 ```js
-logger.setLevel(level);
+rLogger.setLevel(level);
 ```
 ### Logging
 ```js
@@ -59,10 +59,9 @@ logger.dump(data);
 * __data__ - (Object, required) data to display
 
 ### Express.js middleware
-If you want rlogger to log http requests you have to put somewhere this piece of code: 
+If you want rlogger to log http requests you have to put this piece of code before express routes: 
 ```js
-//prefix is not required
-app.use(logger._express(prefix));
+app.use(rLogger.getExpress(prefix));
 ```
 
 ## Example
@@ -71,36 +70,39 @@ var express = require("express");
 
 var server = express();
 
+//logger
+var rlogger = require('rLogger')({
+	file: 'logger.log',
+	level: 'dump'
+});
+GLOBAL.logger = rlogger.getLogger("[ADMIN]".grey);
+
 //configuration
 server.set("port", 80);
-GLOBAL.logger = require("rlogger")({
-	file: "server.log",
-	level: "dump"
-});
-server.use(logger._express("HTTP:"));
+server.use(rlogger.getExpress("[HTTP]".grey));
 
 //routes
-server.get("/error", function(req,res){
-	res.status(500);
-	res.end("Error printed to console!");
-	logger.error("Error requested from &{0}&", [req.ip]);
+server.get("/error", function(req,res,next){
+    res.status(500);
+    res.end("Error printed to console!");
+    logger.error("Error requested from &{0}&", [req.ip]);
 });
-server.get("/warn", function(req,res){
-	res.status(400);
-	res.end("Warning printed to console!");
-	logger.warn("Warning requested from &{0}&", [req.ip]);
+server.get("/warn", function(req,res,next){
+    res.status(400);
+    res.end("Warning printed to console!");
+    logger.warn("Warning requested from &{0}&", [req.ip]);
 });
-server.get("/info", function(req,res){
-	res.end("Info printed to console!");
-	logger.info("Info requested from &{0}&", [req.ip]);
+server.get("/info", function(req,res,next){
+    res.end("Info printed to console!");
+    logger.info("Info requested from &{0}&", [req.ip]);
 });
-server.get("/dev", function(req,res){
-	res.end("Dev message printed to console!");
-	logger.dev("Dev message requested from &{0}&", [req.ip]);
+server.get("/dev", function(req,res,next){
+    res.end("Dev message printed to console!");
+    logger.dev("Dev message requested from &{0}&", [req.ip]);
 });
-server.get("/dump", function(req,res){
-	res.end("Object printed to console!");
-	logger.dump({message: "Object printed to console", ip: req.ip});
+server.get("/dump", function(req,res,next){
+    res.end("Object printed to console!");
+    logger.dump({message: "Object printed to console", ip: req.ip});
 });
 
 server.listen(server.get("port"));
