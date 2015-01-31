@@ -3,6 +3,8 @@ rLogger
 
 Very simple, nice-looking logger.
 
+![alt tag](http://i.imgur.com/5PotCZK.png)
+
 ## Installation
 ```bash
 npm install --save rlogger
