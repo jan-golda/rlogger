@@ -27,7 +27,6 @@ server.get("/warn", function(req,res,next){
 server.get("/info", function(req,res,next){
     res.end("Info printed to console!");
     logger.info("Info requested from &{0}&", [req.ip]);
-    next();
 });
 server.get("/dev", function(req,res,next){
     res.end("Dev message printed to console!");
