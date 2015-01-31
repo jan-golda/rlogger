@@ -3,7 +3,7 @@ var express = require("express");
 var server = express();
 
 //logger
-var rlogger = require('./rlogger2')({
+var rlogger = require('rLogger')({
 	file: 'logger.log',
 	level: 'dump'
 });
