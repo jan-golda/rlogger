@@ -118,11 +118,11 @@ function rLogger(options) {
 				res.end(chunk, encoding);
 				
 				if(res.statusCode >= 500){
-					l.error("&{0}& "+"{1}".red+" {2}".grey, [req.method, res.statusCode, req.url]);
+					l.error("&{0}& "+"{1}".red+" {2}".grey, [req.method, res.statusCode, req.originalUrl]);
 				}else if(res.statusCode >= 400){
-					l.warn("&{0}& "+"{1}".yellow+" {2}".grey, [req.method, res.statusCode, req.url]);
+					l.warn("&{0}& "+"{1}".yellow+" {2}".grey, [req.method, res.statusCode, req.originalUrl]);
 				}else{
-					l.dev("&{0}& "+"{1}".green+" {2}".grey, [req.method, res.statusCode, req.url]);
+					l.dev("&{0}& "+"{1}".green+" {2}".grey, [req.method, res.statusCode, req.originalUrl]);
 				}    
 			};
 			next();
